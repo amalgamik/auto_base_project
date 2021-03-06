@@ -1,28 +1,54 @@
 <template>
   <form>
     <div class="row mb-3">
-      <label for="inputEmail3" class="col-sm-2 col-form-label">Login</label>
+      <label for="inputEmail3" class="col-sm-2 col-form-label" >Login</label>
       <div class="col-sm-4">
-        <input type="email" class="form-control" id="inputEmail3">
+        <input @click="addLead()" type="email" class="form-control" id="inputEmail3">
       </div>
     </div>
     <div class="row mb-3">
       <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
       <div class="col-sm-4">
-        <input type="password" class="form-control" id="inputPassword3">
+        <input @click="readBase()" type="password" class="form-control" id="inputPassword3">
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Войти</button>
+    <button  type="submit" class="btn btn-primary">Войти</button>
   </form>
 
 </template>
 
 <script>
+
+import {db} from '@/firebase/index'
 export default {
   name: 'loginPage',
   props: {
     msg: String
+  },
+  data () {
+	  return {
+	  }
+  },
+  methods: {
+	addLead() {
+		var clientEmail = document.getElementById('inputEmail3').value;
+		var clientPass = document.getElementById('inputPassword3').value;
+	
+		var newClientKey = db.ref().child('users').push().key;
+		db.ref('users/' + newClientKey + '/name').set(clientEmail);
+		db.ref('users/' + newClientKey + '/pass').set(clientPass);
+		console.log('i`m working')
+	},
+	readBase () {
+		var users = db.ref('users');
+		users.on('value', function(snapshot) {
+		snapshot.forEach(function(childSnapshot) {
+		var childData = childSnapshot.val();
+		console.log(childData);
+		});
+	})
+	}
   }
 }
 </script>
