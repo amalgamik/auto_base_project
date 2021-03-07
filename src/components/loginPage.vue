@@ -1,19 +1,19 @@
 <template>
   <form>
-    <div class="row mb-3">
+    <div class="row mb-3 justify-content-center">
       <label for="inputEmail3" class="col-sm-2 col-form-label" >Login</label>
       <div class="col-sm-4">
         <input @click="addLead()" type="email" class="form-control" id="inputEmail3">
       </div>
     </div>
-    <div class="row mb-3">
+    <div class="row mb-3 justify-content-center">
       <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
       <div class="col-sm-4">
         <input @click="readBase()" type="password" class="form-control" id="inputPassword3">
       </div>
     </div>
 
-    <button  type="submit" class="btn btn-primary">Войти</button>
+    <button class="btn btn-primary"><a href="#/Home">Войти</a></button>
   </form>
 
 </template>
@@ -67,6 +67,9 @@ li {
   margin: 0 10px;
 }
 a {
-  color: #42b983;
+	display: block;
+	width: 100%;
+	color: #fff;
+	text-decoration: none!important;
 }
 </style>

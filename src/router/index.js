@@ -1,12 +1,22 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import faker from '../views/FakerBase.vue'
+import StartPage from '../views/StartPage.vue'
+import App from '../App.vue'
 
 const routes = [
 	{
 		path: '/',
+		name: 'StartPage',
+		component: StartPage
+	},
+	{
+		path: '/main',
+		name: 'Main',
+		component: App
+	},
+	{
+		path: '/home',
 		name: 'Home',
-		component: Home
+		component: () => import('@/views/Home.vue')
 	},
 	{
 		path: '/faker',
@@ -14,7 +24,7 @@ const routes = [
 		component: () => import('@/views/FakerBase.vue')
 	},
 	{
-		path: '/Store',
+		path: '/store',
 		name: 'Store',
 		component: () => import('@/views/Store.vue')
 	},
@@ -29,6 +39,8 @@ const routes = [
 ]
 
 const router = createRouter({
+	linkActiveClass: "active",
+	linkExactActiveClass: "exact-active",
 	history: createWebHashHistory(),
 	routes
 })
