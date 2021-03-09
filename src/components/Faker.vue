@@ -65,20 +65,22 @@ export default {
         second: "numeric",
       };
       for (let i = 1; i <= 500; i++) {
+		let componentskey = db.ref().child('components').push().key;
         this.name = faker.vehicle.model();
         this.addDate = faker.date.past();
         this.addDate = this.addDate.toLocaleString("ru", options);
-        this.amount = faker.finance.amount();
+        this.amount = faker.random.number({ min: 1, max: 99 });
         this.cost = faker.commerce.price();
         this.article = faker.random.number({ min: 100001, max: 999999 });
         this.manager_id = faker.random.number({ min: 1, max: 7 });
 
-        db.ref("components/" + i + "/name").set(this.name);
-        db.ref("components/" + i + "/addDate").set(this.addDate);
-        db.ref("components/" + i + "/amount").set(this.amount);
-        db.ref("components/" + i + "/cost").set(this.cost);
-        db.ref("components/" + i + "/article").set(this.article);
-        db.ref("components/" + i + "/manager_id").set(this.manager_id);
+        db.ref("components/" + componentskey + "/id").set(i);
+        db.ref("components/" + componentskey + "/name").set(this.name);
+        db.ref("components/" + componentskey + "/addDate").set(this.addDate);
+        db.ref("components/" + componentskey + "/amount").set(this.amount);
+        db.ref("components/" + componentskey + "/cost").set(this.cost);
+        db.ref("components/" + componentskey + "/article").set(this.article);
+        db.ref("components/" + componentskey + "/manager_id").set(this.manager_id);
         console.log(i);
       }
     },
@@ -88,7 +90,29 @@ export default {
       for (let i = 1; i <= 7; i++) {
         let name = faker.name.findName();
 
-        db.ref("managers/" + i + "/name").set(name);
+		// db.ref("managers/" + i + "/name").set(name);
+
+		// запись в бд через ключ
+        // db.ref().child("managers").push({
+        //   id: i,
+        //   name: name,
+        // });
+
+
+		// генерация ключа
+		// let userkey = db.ref().child('users').push().key;
+
+
+		// Получение ключа
+		// let components = db.ref("managers");
+		// components.on("value", (snapshot) => {
+        // snapshot.forEach((childSnapshot) => {
+        //   let childkey = childSnapshot.key;
+		// 	console.log(childkey);
+		// 	});
+		// });
+
+		
       }
     },
   },

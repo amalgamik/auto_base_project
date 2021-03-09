@@ -19,7 +19,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // Get a reference to the database service
-var db = firebase.database();
+let db = firebase.database();
 
 
 
