@@ -1,29 +1,30 @@
 <template>
-  <div>
+  <div class="storeContainer">
     <div class="col-12">
       <div class="tableHead list-group-item list-group-item-info">
-        <div>Component</div>
-        <div>Add date</div>
-        <div>Avaliable quantity</div>
+        <div class="id">Id</div>
+        <div class="name">Component</div>
+        <div class="addDate">Add date</div>
+        <div class="quantity">Avaliable quantity</div>
         <div>Price</div>
         <div>Article</div>
         <div>Responsible manager</div>
       </div>
       <ul class="row">
         {{
-          readManagerBase_
+          readManagerBase
         }}
         {{
-          readComponentBase_
+          readComponentBase
         }}
         {{
-          perPage_
+          perPage
         }}
         <componentBase
           :lineClass="index"
           :item="item"
-          :manager="$store.state.managerBase[item.manager_id]"
-          v-for="(item, index) in $store.state.arr"
+          :manager="managerBase[item.manager_id].name"
+          v-for="(item, index) in arr"
           :key="$store.state.storeBaseKey[index]"
         ></componentBase>
       </ul>
@@ -31,14 +32,14 @@
     <div class="col-12">
       <div class="row justify-content-center">
         <div class="col-3">
-          <button @click="readBase()" class="btn btn-primary">Read Base</button>
+          <button class="btn btn-primary"><a href="#/store/addComponent">Add component</a></button>
         </div>
         <div class="col-6">
           <select
             class="form-select form-select-sm"
             aria-label=".form-select-sm example"
             v-model="$store.state.selectedOption"
-            @change="getSelection_()"
+            @change="getSelection()"
           >
             <option disabled value="">Select line</option>
             <option value="10">10 line</option>
@@ -51,10 +52,10 @@
     <div class="row">
       <ul class="pages">
         <pages-list
-          @selectPage_="onSelectPage_($event)"
+          @selectPage_="onSelectPage($event)"
           :page="page"
           v-for="page in $store.state.pages"
-          :key="$store.state.pages"
+          :key="page"
         />
       </ul>
     </div>
@@ -62,78 +63,51 @@
 </template>
 
 <script>
-import componentBase from "@/components/ComponentBase.vue";
+import ComponentBase from "@/components/ComponentBase.vue";
 import PagesList from "@/components/pagesList.vue";
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 export default {
   name: "StoreList",
-  components: { componentBase, PagesList },
+  components: { ComponentBase, PagesList },
   data() {
     return {
-    //   storeBase: [],
-    //   storeBaseKey: [],
-    //   managerBase: [],
-    //   selectedOption: "",
-    //   pages: 0,
-    //   arr: [],
-    //   selectedPage: 1,
-    //   lineNumber: "",
     };
   },
+//   created () {
+// 	this.readManagerBase();
+// 	this.readComponentBase();
+//   },
+//   mounted () {
+// 	  this.$store.state.selectedOption = 1;
+// 	  console.log(this.$store.state.selectedOption);
+// 	  this.perPage()
+//   },
   methods: {
-    getSelection_() {
-	  this.$store.commit("getSelection"); 
-    },
-    onSelectPage_(data) {
-	  this.$store.commit("onSelectPage", data); 
-    },
-    
+	  ...mapMutations ([
+		  'getSelection',
+		  'onSelectPage',
+	  ]),
+	  ...mapActions ([
+		
+	  ]),
   },
+  
   computed: {
-	  readManagerBase_() {
-      this.$store.commit("readManagerBase");
-    },
-    readComponentBase_() {
-      this.$store.commit("readComponentBase");
-    },
-    perPage_() {
-      this.$store.commit("perPage");
-    },
-    // readManagerBase() {
-    //   //Получаем список менеджеров
-    //   this.managerBase.length = 0;
-    //   let manager = db.ref("managers");
-    //   manager.on("value", (snapshot) => {
-    //     let Data = snapshot.val();
-    //     this.managerBase = Data;
-    //   });
-    // },
-    // readComponentBase() {
-    //   //Получаем список деталей
-    //   this.storeBase.length = 0;
-    //   let components = db.ref("components");
-    //   components.on("value", (snapshot) => {
-    //     snapshot.forEach((childSnapshot) => {
-    //       let childData = childSnapshot.val();
-    // 	  this.storeBaseKey.push(childSnapshot.key);
-    //       this.storeBase.push(childData);
-    //     });
-    //   });
-    // },
-    // perPage() {
-    //пагинация
-    //   this.lineNumber == "" ? (this.lineNumber = 5) : this.lineNumber;
-    //   let startPoint = (this.selectedPage - 1 ) * +this.lineNumber;
-    //   this.arr = this.storeBase.slice(
-    //     startPoint,
-    //     (startPoint + +this.lineNumber)
-    //   );
-    //   this.pages = Math.ceil(this.storeBase.length / this.lineNumber);
-    // },
+	  ...mapGetters([
+		  'managerBase',
+		  'storeBase',
+		  'storeBaseKey',
+		  'arr'
+	  ]),
+	  ...mapActions ([
+		'readManagerBase',
+		'readComponentBase',
+		'perPage',  
+	  ]),
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .tableHead {
   display: flex;
@@ -148,5 +122,42 @@ ul {
 .pages {
   display: flex;
   flex-wrap: wrap;
+}
+a {
+	display: block;
+	width: 100%;
+	color: #fff;
+	text-decoration: none!important;
+}
+
+.tableHead  {
+  display: flex;
+  flex-wrap: nowrap;
+  padding-bottom: 15px;
+  padding: 0;
+  justify-content: flex-start;
+}
+.tableHead div {
+	display: flex;
+	justify-content: flex-start;
+	width: 15%;
+}
+.id {
+	width: 5%!important;
+	justify-content: center!important;
+
+}
+.name {
+	width: 13%!important;
+	font-size: 16px;
+}
+.storeContainer {
+	padding: 0;
+}
+.quantity {
+	width: 14%!important;
+}
+.addDate {
+	justify-content: center!important;
 }
 </style>

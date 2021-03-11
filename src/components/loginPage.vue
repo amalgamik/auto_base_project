@@ -31,7 +31,7 @@ export default {
 	  }
   },
   methods: {
-	addLead() {
+	addLead () {
 		var clientEmail = document.getElementById('inputEmail3').value;
 		var clientPass = document.getElementById('inputPassword3').value;
 	

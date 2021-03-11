@@ -6,19 +6,26 @@
         'list-group-item',
       ]"
     >
-      <div>{{ item.id }}</div>
-      <div>{{ item.name }}</div>
+      <div class="id">{{ item.id }}</div>
+      <div class="name">{{ item.name }}</div>
       <div>{{ item.addDate }}</div>
-      <div>{{ item.amount }}</div>
+      <div class="amount">{{ item.amount }}</div>
       <div>{{ item.cost }}</div>
       <div>{{ item.article }}</div>
-      <div>{{ manager.name }}</div>
+      <div>{{ manager }}</div>
 
       <button @click="visibility = !visibility">Add to reserv</button>
     </div>
-    <form v-if="visibility" >
+    <form v-if="visibility">
       <div>Set quantity</div>
-      <input v-model="quantity" type="number" min="0" :max="item.amount" name="quantity" id="quantity" />
+      <input
+        v-model="quantity"
+        type="number"
+        min="0"
+        :max="item.amount"
+        name="quantity"
+        id="quantity"
+      />
       <button @click="addToReserv($event)">Add</button>
     </form>
   </li>
@@ -36,23 +43,35 @@ export default {
   },
   methods: {
     addToReserv(event) {
-	  event.preventDefault();	
+      event.preventDefault();
       alert(quantity.value);
       //   this.visibility = false
     },
   },
-  computed: {
-
-  }
+  computed: {},
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 li div {
   display: flex;
   flex-wrap: nowrap;
   padding-bottom: 15px;
-  justify-content: space-evenly;
+  justify-content: space-between;
+}
+li div div {
+  width: 13%;
+}
+.id {
+  width: 5% !important;
+}
+.name {
+  width: 10% !important;
+}
+.amount {
+  justify-content: center;
+}
+button {
+  justify-content: flex-end;
 }
 </style>

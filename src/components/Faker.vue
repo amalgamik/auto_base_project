@@ -90,7 +90,7 @@ export default {
       for (let i = 1; i <= 7; i++) {
         let name = faker.name.findName();
 
-		// db.ref("managers/" + i + "/name").set(name);
+		db.ref("managers/" + i + "/name").set(name);
 
 		// запись в бд через ключ
         // db.ref().child("managers").push({
