@@ -12,20 +12,14 @@
       </div>
       <ul class="row">
         {{
-          readManagerBase
-        }}
-        {{
-          readComponentBase
-        }}
-        {{
-          perPage
+          perPage()
         }}
         <componentBase
           :lineClass="index"
           :item="item"
-          :manager="managerBase[item.manager_id].name"
+          :manager="managerBase[item.manager_id - 1]"
           v-for="(item, index) in arr"
-          :key="$store.state.storeBaseKey[index]"
+          :key="item"
         ></componentBase>
       </ul>
     </div>
@@ -33,13 +27,15 @@
       <div class="row justify-content-center">
         <div class="col-3">
           <button class="btn btn-primary"><a href="#/store/addComponent">Add component</a></button>
+          <button @click="perPage()"
+		  class="btn btn-primary">Get List</button>
         </div>
         <div class="col-6">
           <select
             class="form-select form-select-sm"
             aria-label=".form-select-sm example"
-            v-model="$store.state.selectedOption"
-            @change="getSelection()"
+            v-model="selectedOptionLocal"
+            @change="getSelection(selectedOptionLocal)"
           >
             <option disabled value="">Select line</option>
             <option value="10">10 line</option>
@@ -54,7 +50,7 @@
         <pages-list
           @selectPage_="onSelectPage($event)"
           :page="page"
-          v-for="page in $store.state.pages"
+          v-for="page in pages"
           :key="page"
         />
       </ul>
@@ -71,24 +67,20 @@ export default {
   components: { ComponentBase, PagesList },
   data() {
     return {
+		selectedOptionLocal: "",
     };
   },
-//   created () {
-// 	this.readManagerBase();
-// 	this.readComponentBase();
-//   },
-//   mounted () {
-// 	  this.$store.state.selectedOption = 1;
-// 	  console.log(this.$store.state.selectedOption);
-// 	  this.perPage()
-//   },
+  created () {
+	  
+	  
+  },
   methods: {
 	  ...mapMutations ([
 		  'getSelection',
 		  'onSelectPage',
+		  'perPage',
 	  ]),
 	  ...mapActions ([
-		
 	  ]),
   },
   
@@ -97,12 +89,15 @@ export default {
 		  'managerBase',
 		  'storeBase',
 		  'storeBaseKey',
-		  'arr'
+		  'arr',
+		  'lineNumber',
+		  'selectedPage',
+		  'pages'
 	  ]),
 	  ...mapActions ([
-		'readManagerBase',
-		'readComponentBase',
-		'perPage',  
+		// 'readManagerBase',
+		// 'readComponentBase',
+		// 'perPage',  
 	  ]),
   },
 };

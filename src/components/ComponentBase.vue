@@ -12,9 +12,12 @@
       <div class="amount">{{ item.amount }}</div>
       <div>{{ item.cost }}</div>
       <div>{{ item.article }}</div>
-      <div>{{ manager }}</div>
+      <div>{{ manager.name }}</div>
 
-      <button @click="visibility = !visibility">Add to reserv</button>
+      <div>
+      	<button @click="visibility = !visibility">Add to reserv</button>
+	    <button @click="deleteFromDB({key: $store.state.storeBaseKey[lineClass], index : lineClass})">Delete</button>
+      </div>
     </div>
     <form v-if="visibility">
       <div>Set quantity</div>
@@ -32,9 +35,10 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   name: "ComponentBase",
-  props: ["item", "lineClass", "manager"],
+  props: ["item", "lineClass", "manager", "key"],
   data() {
     return {
       visibility: false,
@@ -44,9 +48,12 @@ export default {
   methods: {
     addToReserv(event) {
       event.preventDefault();
-      alert(quantity.value);
+	  console.log($key);
       //   this.visibility = false
     },
+	...mapActions ([
+		'deleteFromDB'
+	])
   },
   computed: {},
 };

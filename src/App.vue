@@ -2,6 +2,27 @@
   <router-view/>
 </template>
 
+<script>
+import { mapMutations } from 'vuex';
+export default {
+  components: {
+  },
+  mounted () {
+	  this.readComponentBase();
+
+},
+  methods: {
+	  ...mapMutations ([
+		'readComponentBase',
+	  ]),
+  },
+  computed: {
+
+  },
+}
+
+</script>
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

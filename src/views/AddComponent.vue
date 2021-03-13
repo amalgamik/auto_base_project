@@ -65,7 +65,7 @@
                   <managers
                     :manager="manager"
                     :index="index"
-                    v-for="(manager, index) in managerBase.slice(1)"
+                    v-for="(manager, index) in managerBase"
                     :key="manager"
                     >Select line</managers
                   >
@@ -115,11 +115,8 @@ export default {
       selectedManager: 0,
     };
   },
-  created() {
-    this.readManagerBase();
-  },
   methods: {
-    ...mapActions(["readManagerBase"]),
+    // ...mapActions(["readManagerBase"]),
     sendToDB() {
       this.$store.dispatch("sendToDB", {
         name: this.name,
