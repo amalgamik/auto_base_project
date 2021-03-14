@@ -60,7 +60,7 @@
 
 <script>
 import ComponentBase from "@/components/ComponentBase.vue";
-import PagesList from "@/components/pagesList.vue";
+import PagesList from "@/components/PagesList.vue";
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 export default {
   name: "StoreList",
@@ -95,9 +95,6 @@ export default {
 		  'pages'
 	  ]),
 	  ...mapActions ([
-		// 'readManagerBase',
-		// 'readComponentBase',
-		// 'perPage',  
 	  ]),
   },
 };

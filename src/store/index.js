@@ -18,6 +18,7 @@ export default createStore({
 			newName: "",
 			newAmount: "",
 			newPrice:"",
+			showModal: false,
 		}
 	},
 	getters: {
@@ -44,6 +45,9 @@ export default createStore({
 		},
 		pages(state) {
 			return state.pages;
+		},
+		showModal(state) {
+			return state.showModal;
 		},
 	},
 	mutations: {
@@ -82,25 +86,20 @@ export default createStore({
 			state.lineNumber == "" ? (state.lineNumber = 5) : state.lineNumber;
 			(state.selectedPage == 0) ? (state.selectedPage = 1) : state.selectedPage;
 			let startPoint = (state.selectedPage - 1) * +state.lineNumber;
-			console.log('33333',state.storeBase, typeof(state.storeBase));
-			console.log('333444',state.managerBase, typeof(state.managerBase));
 			let arr = state.storeBase.slice(
 				startPoint,
 				(startPoint + +state.lineNumber)
 			);
 			let pages = Math.ceil(state.storeBase.length / state.lineNumber);
-			console.log('from perPage', arr);
 
 			state.arr = arr;
 			state.pages = pages;
 
 		},
 		getSelection(state, data) {
-			console.log(data);
 			state.lineNumber = data;
 		},
 		onSelectPage(state, data) {
-			console.log(data);
 			state.selectedPage = data.data;
 		},
 		setToDB (state, data) {
@@ -123,69 +122,18 @@ export default createStore({
 				});
 		},
 		deleteFromDB (state, data) {
-			console.log('11111', data);
+			console.log('deleteFromDB', data);
 			let removed = db.ref('components');
 			state.arr.splice(data.index, 1);
 			removed.child(data.key).remove();
-
-		}
+			state.showModal = false;
+		},
+		setShowModal (state, data) {
+			console.log('setShowModal', data);
+			state.showModal = data.show;
+		},
 	},
 	actions: {
-		// async readManagerBase(context) {
-		// 	let ManDB = [];
-		// 	let manager = db.ref("managers");
-		// 		await manager.on("value", (snapshot) => {
-		// 			ManDB.length = 0;
-		// 			snapshot.forEach((childSnapshot) => {
-		// 				let childData = childSnapshot.val();
-		// 				ManDB.push(childData);
-		// 			});
-		// 		});
-		// 	console.log('from readManagerBase ', ManDB)
-		// 	context.commit('readManagerBase', ManDB);
-		// },
-		// async readComponentBase(context) {
-		// 	let storeDB = [];
-		// 	let storeDBKey = [];
-		// 	let ManDB = [];
-		// 	let components = db.ref();
-		// 	await components.child('components').once("value", (snapshot) => {
-		// 		storeDB.length = 0;
-		// 		storeDBKey.length = 0;
-		// 		snapshot.forEach((childSnapshot) => {
-		// 			let childData = childSnapshot.val();
-		// 			storeDBKey.push(childSnapshot.key);
-		// 			storeDB.push(childData);
-		// 		});
-		// 	});
-		// 	await components.child('managers').once("value", (snapshot) => {
-		// 		ManDB.length = 0;
-		// 		snapshot.forEach((childSnapshot) => {
-		// 			let childData = childSnapshot.val();
-		// 			ManDB.push(childData);
-		// 		});
-		// 	});
-		// 	components.off();
-		// 	console.log('from readComponentBase ', ManDB, storeDBKey, storeDB);
-
-		// 	context.commit('readComponentBase', {storeDB: storeDB, storeDBKey: storeDBKey, ManDB:ManDB});
-		// },
-		// perPage(context, data) { 
-		// 	console.log('00000',data);
-		// 	state.lineNumber == "" ? (state.lineNumber = 5) : state.lineNumber;
-		// 	(state.selectedPage == 0) ? (state.selectedPage = 1) : state.selectedPage;
-		// 	let startPoint = (state.selectedPage - 1) * +state.lineNumber;
-		// 	console.log('33333',data.storeBase, typeof(data.storeBase));
-		// 	console.log('333444',data.managerBase, typeof(data.managerBase));
-		// 	let arr = state.storeBase.slice(
-		// 		startPoint,
-		// 		(startPoint + +state.lineNumber)
-		// 	);
-		// 	let pages = Math.ceil(state.storeBase.length / state.lineNumber);
-		// 	console.log('from perPage', arr);
-
-		// 	context.commit('perPage', {arr: arr, pages: pages});
-		// },
 		sendToDB(context, data) {
 			context.commit('setToDB', data);
 		},

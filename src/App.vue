@@ -6,6 +6,7 @@
 import { mapMutations } from 'vuex';
 export default {
   components: {
+	  
   },
   mounted () {
 	  this.readComponentBase();

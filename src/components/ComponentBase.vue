@@ -16,8 +16,16 @@
 
       <div>
       	<button @click="visibility = !visibility">Add to reserv</button>
-	    <button @click="deleteFromDB({key: $store.state.storeBaseKey[lineClass], index : lineClass})">Delete</button>
-      </div>
+	    <button id="show-modal" @click="setShowModal({show: true})">Delete</button>
+		<modal :key="lineClass" :keyDB='$store.state.storeBaseKey[lineClass]' :indexDB="lineClass" v-if="showModal" @close="setShowModal({show: false})">
+			<!--
+			you can use custom content here to overwrite default content
+			-->
+			<template v-slot:header>
+			<h3>custom header</h3>
+			</template>
+		</modal>
+	  </div>
     </div>
     <form v-if="visibility">
       <div>Set quantity</div>
@@ -35,27 +43,34 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import Modal from '@/components/Modal'
+import { mapGetters, mapMutations } from 'vuex';
 export default {
   name: "ComponentBase",
-  props: ["item", "lineClass", "manager", "key"],
+  components: { Modal },
+  props: ["item", "lineClass", "manager"],
   data() {
     return {
       visibility: false,
       quantity: 0,
+	  keyDB: '',
+	  indexDB: 0,
     };
   },
   methods: {
     addToReserv(event) {
       event.preventDefault();
-	  console.log($key);
-      //   this.visibility = false
+        // this.visibility = false
     },
-	...mapActions ([
-		'deleteFromDB'
+	...mapMutations ([
+		'setShowModal'
 	])
   },
-  computed: {},
+  computed: {
+	  ...mapGetters ([
+		  'showModal'
+	  ])
+  },
 };
 </script>
 
