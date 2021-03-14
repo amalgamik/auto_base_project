@@ -26,7 +26,7 @@
 			you can use custom content here to overwrite default content
 			-->
 			<template v-slot:header>
-			<h3>custom header</h3>
+			<h3>Warning!</h3>
 			</template>
 		</modal>
       </ul>
@@ -111,6 +111,9 @@ export default {
 </script>
 
 <style scoped>
+.modal-header {
+	justify-content: center!important;
+}
 .tableHead {
   display: flex;
   flex-wrap: nowrap;
