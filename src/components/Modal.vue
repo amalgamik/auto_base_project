@@ -22,7 +22,7 @@
               <button class="modal-default-button" @click="deleteFromDB({key : keyDB, index: indexDB})">
                 OK
               </button>
-              <button class="modal-default-button" @click="$emit('close')">
+              <button class="modal-default-button" @click="setShowModal({show: false})">
                 Cancel
               </button>
             </slot>
@@ -34,20 +34,28 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 export default {
   name: "Modal",
-  props: ["keyDB", "indexDB"],
   data() {
     return {
 		
 	};
   },
   methods: {
+	...mapMutations ([
+		'setShowModal'
+	]),
     ...mapActions ([
 		'deleteFromDB'
 	]),
   },
+  computed: {
+	  ...mapGetters ([
+		  'keyDB',
+		  'indexDB'
+	  ])
+  }
 };
 </script>
 

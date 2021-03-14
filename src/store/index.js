@@ -19,6 +19,8 @@ export default createStore({
 			newAmount: "",
 			newPrice:"",
 			showModal: false,
+			keyDB : '',
+			indexDB: 0,
 		}
 	},
 	getters: {
@@ -48,6 +50,12 @@ export default createStore({
 		},
 		showModal(state) {
 			return state.showModal;
+		},
+		keyDB(state) {
+			return state.keyDB;
+		},
+		indexDB(state) {
+			return state.indexDB;
 		},
 	},
 	mutations: {
@@ -129,8 +137,13 @@ export default createStore({
 			state.showModal = false;
 		},
 		setShowModal (state, data) {
-			console.log('setShowModal', data);
-			state.showModal = data.show;
+			console.log('setShowModal(MUT)', data);
+			state.showModal = data;
+		},
+		setParamForDel (state, data) {
+		console.log('setParamForDel(MUT)', data);
+		state.keyDB = data.key
+		state.indexDB = data.index
 		},
 	},
 	actions: {
@@ -139,7 +152,12 @@ export default createStore({
 		},
 		deleteFromDB (context, data) {
 			context.commit('deleteFromDB', data);
-		}
+		},
+		setShowModal (context, data) {
+			console.log('setShowModal(ACT)', data);
+			context.commit('setShowModal', data.show);
+			context.commit('setParamForDel', data);
+		},
 	},
 	modules: {
 	}
