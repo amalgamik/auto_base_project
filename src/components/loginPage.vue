@@ -1,75 +1,69 @@
 <template>
-  <form>
-    <div class="row mb-3 justify-content-center">
-      <label for="inputEmail3" class="col-sm-2 col-form-label" >Login</label>
-      <div class="col-sm-4">
-        <input @click="addLead()" type="email" class="form-control" id="inputEmail3">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-4">
+        <div class="vue-tempalte">
+          <form @submit.prevent="userLogin">
+            <h3>Sign In</h3>
+
+            <div class="form-group">
+              <label>Email address</label>
+              <input
+                type="email"
+                class="form-control form-control-lg"
+                v-model="user.email"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                class="form-control form-control-lg"
+                v-model="user.password"
+              />
+            </div>
+
+            <button type="submit" class="btn btn-dark btn-lg btn-block">
+              Sign In
+            </button>
+
+            <p class="forgot-password text-right mt-2 mb-4">
+              <router-link to="/signup">Sign Up</router-link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
-    <div class="row mb-3 justify-content-center">
-      <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
-      <div class="col-sm-4">
-        <input @click="readBase()" type="password" class="form-control" id="inputPassword3">
-      </div>
-    </div>
-
-    <button class="btn btn-primary"><a href="#/Home">Войти</a></button>
-  </form>
-
+  </div>
 </template>
 
-<script>
 
-import {db} from '@/firebase/index'
+<script>
+import {firebase} from "@/firebase/index.js";
+
 export default {
   name: 'loginPage',
-  props: {
-    msg: String
-  },
-  data () {
-	  return {
-	  }
+  data() {
+    return {
+      user: {
+        email: "",
+        password: "",
+      },
+    };
   },
   methods: {
-	addLead () {
-		var clientEmail = document.getElementById('inputEmail3').value;
-		var clientPass = document.getElementById('inputPassword3').value;
-	
-		var newClientKey = db.ref().child('users').push().key;
-		db.ref('users/' + newClientKey + '/name').set(clientEmail);
-		db.ref('users/' + newClientKey + '/pass').set(clientPass);
-		console.log('i`m working')
-	},
-	readBase () {
-		var users = db.ref('users');
-		users.on('value', function(snapshot) {
-		snapshot.forEach(function(childSnapshot) {
-		var childData = childSnapshot.val();
-		console.log(childData);
-		});
-	})
-	}
-  }
-}
+    userLogin() {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.user.email, this.user.password)
+        .then(() => {
+          this.$router.push("/store");
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    },
+  },
+};
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-	display: block;
-	width: 100%;
-	color: #fff;
-	text-decoration: none!important;
-}
-</style>

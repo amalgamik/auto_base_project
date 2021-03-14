@@ -4,6 +4,7 @@
 
 import firebase from '@firebase/app';
 import "@firebase/database";
+import '@firebase/auth'
 
 // Add the Firebase products that you want to use
 const firebaseConfig = {
@@ -26,4 +27,7 @@ let db = firebase.database();
 
 export {
 	db
-}
+};
+export {
+	firebase
+};
