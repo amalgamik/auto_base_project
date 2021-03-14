@@ -22,7 +22,7 @@
               <button class="modal-default-button" @click="deleteFromDB({key : keyDB, index: indexDB})">
                 OK
               </button>
-              <button class="modal-default-button" @click="setShowModal({show: false})">
+              <button class="modal-default-button" @click="setShowModal({show: false,  key: '', index: 0})">
                 Cancel
               </button>
             </slot>
@@ -43,7 +43,7 @@ export default {
 	};
   },
   methods: {
-	...mapMutations ([
+	...mapActions([
 		'setShowModal'
 	]),
     ...mapActions ([
