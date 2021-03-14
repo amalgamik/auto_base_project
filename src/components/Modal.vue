@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   name: "Modal",
   data() {
@@ -43,11 +43,9 @@ export default {
 	};
   },
   methods: {
-	...mapActions([
-		'setShowModal'
-	]),
     ...mapActions ([
-		'deleteFromDB'
+		'deleteFromDB',
+		'setShowModal'
 	]),
   },
   computed: {
