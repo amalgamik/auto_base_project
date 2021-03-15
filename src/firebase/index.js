@@ -22,7 +22,14 @@ firebase.initializeApp(firebaseConfig);
 // Get a reference to the database service
 let db = firebase.database();
 
-
+firebase.getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+        const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+            unsubscribe();
+            resolve(user);
+        }, reject);
+    })
+};
 
 
 export {

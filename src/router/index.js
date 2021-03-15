@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import StartPage from '../views/StartPage.vue'
 import App from '../App.vue'
+import { firebase } from "@/firebase/index.js";
 
 const routes = [
 	{
@@ -12,41 +13,65 @@ const routes = [
 	{
 		path: '/main',
 		name: 'Main',
-		component: App
+		component: App,
+		meta: {
+			requiresAuth: true
+		  }
 	},
 	{
 		path: '/home',
 		name: 'Home',
-		component: () => import('@/views/Home.vue')
+		component: () => import('@/views/Home.vue'),
+		meta: {
+			requiresAuth: true
+		  }
 	},
 	{
 		path: '/faker',
 		name: 'Faker',
-		component: () => import('@/views/FakerBase.vue')
+		component: () => import('@/views/FakerBase.vue'),
+		meta: {
+			requiresAuth: true
+		  }
 	},
 	{
 		path: '/store',
 		name: 'Store',
-		component: () => import('@/views/Store.vue')
+		component: () => import('@/views/Store.vue'),
+		meta: {
+			requiresAuth: true
+		  }
 	},
 	{
 		path: '/store/addComponent',
 		name: 'AddComponent',
-		component: () => import('@/views/AddComponent.vue')
+		component: () => import('@/views/AddComponent.vue'),
+		meta: {
+			requiresAuth: true
+		  }
 	},
 	{
 		path: '/about',
 		name: 'About',
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
-		component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+		component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+		meta: {
+			requiresAuth: true
+		  }
 	},
 	{
 		path: '/signup',
 		name: 'signup',
-		component: () => import('@/components/Signup.vue')
+		component: () => import('@/views/Signup.vue')
 	},
+	{ 
+    path: '/404', 
+    name: '404', 
+    component: () => import ('@/views/NotFound') 
+ 	}, 
+	{ 
+    path: '/:pathMatch(.*)*', 
+    redirect: '/404' 
+  	}
 ]
 
 const router = createRouter({
@@ -55,5 +80,14 @@ const router = createRouter({
 	history: createWebHashHistory(),
 	routes
 })
+
+router.beforeEach(async (to, from, next) => {
+	const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+	if (requiresAuth && !await firebase.getCurrentUser()) {
+	  next('/');
+	} else {
+	  next();
+	}
+  })
 
 export default router

@@ -1,47 +1,43 @@
 <template>
-	<div>
-		<nav-panel/>
-		<div class="home">
-			<img alt="Vue logo" src="../assets/logo.png">
-		</div>
-		<div class="vue-tempalte">
-        <h3>Welcome</h3>
-           <!-- <p>{{user.displayName}}</p>
+  <div>
+    <nav-panel />
+    <div class="home">
+      <img alt="Vue logo" src="../assets/logo.png" />
+    </div>
+    <div class="vue-tempalte">
+      <h3>Welcome</h3>
+      <!-- <p>{{user.displayName}}</p>
            <p>{{user.email}}</p> -->
-        
-        <button 
-        type="submit" 
+
+      <button
+        type="submit"
         class="btn btn-dark btn-lg btn-block"
-        @click="logOut()">
-            Log out
-        </button>
-        
-			<router-link to="/store">
-				<button 
-				class="btn btn-dark btn-lg btn-block"
-				>
-					Go ahead
-				</button>
-			</router-link>
-        
-		</div>
-	</div>
+        @click="logOut()"
+      >
+        Log out
+      </button>
+
+      <router-link to="/store">
+        <button class="btn btn-dark btn-lg btn-block">Go ahead</button>
+      </router-link>
+    </div>
+  </div>
 </template>
 
 <script>
 // @ is an alias to /src
 
-import NavPanel from '@/components/NavPanel.vue'
-import {firebase} from "@/firebase/index.js";
+import NavPanel from "@/components/NavPanel.vue";
+import { firebase } from "@/firebase/index.js";
 
 export default {
   name: "Home",
   components: {
-	  NavPanel, 
+    NavPanel,
   },
   data() {
     return {
-      user: null
+      user: null,
     };
   },
   created() {
@@ -55,13 +51,16 @@ export default {
   },
   methods: {
     logOut() {
-      firebase.auth().signOut().then(() => {
-        firebase.auth().onAuthStateChanged(() => {
-          this.$router.replace('/')
-        })
-      })
-    }
-  }
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          firebase.auth().onAuthStateChanged(() => {
+            this.$router.replace("/");
+          });
+        });
+    },
+  },
 };
 </script>
 

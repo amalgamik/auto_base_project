@@ -6,7 +6,7 @@
         'list-group-item',
       ]"
     >
-      <div class="id">{{ item.id }}</div>
+      <div class="id">{{ lineClass + 1 }}</div>
       <div class="name">{{ item.name }}</div>
       <div>{{ item.addDate }}</div>
       <div class="amount">{{ item.amount }}</div>

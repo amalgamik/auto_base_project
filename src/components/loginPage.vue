@@ -40,10 +40,10 @@
 
 
 <script>
-import {firebase} from "@/firebase/index.js";
+import { firebase } from "@/firebase/index.js";
 
 export default {
-  name: 'loginPage',
+  name: "loginPage",
   data() {
     return {
       user: {
