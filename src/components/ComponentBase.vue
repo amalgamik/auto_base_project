@@ -30,7 +30,7 @@
         name="quantity"
         id="quantity"
       />
-      <button @click="addToReserv($event)">Add</button>
+      <button @click.prevent="addToReserv({quantity: quantity, key: $store.state.storeBaseKey[lineClass], max: item.amount, name: item.name})">Add</button>
     </form>
   </li>
 </template>
@@ -56,7 +56,8 @@ export default {
         // this.visibility = false
     },
 	...mapActions ([
-		'setShowModal'
+		'setShowModal',
+		'addToReserv'
 	]),
 	...mapMutations ([
 	])

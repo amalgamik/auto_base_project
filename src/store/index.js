@@ -145,6 +145,19 @@ export default createStore({
 		state.keyDB = data.key
 		state.indexDB = data.index
 		},
+		addToReserv (state, data) {
+		console.log('addToReserv(MUT)', data);
+
+		db.ref().child("reserves").push({
+			name: data.name,
+			quantity: data.quantity,
+			component_key: data.key,
+		  });
+		  let res = data.max - data.quantity;
+
+		  db.ref().child('components').child(data.key).update({amount: res});
+
+		},
 	},
 	actions: {
 		sendToDB(context, data) {
@@ -157,6 +170,10 @@ export default createStore({
 			console.log('setShowModal(ACT)', data);
 			context.commit('setShowModal', data.show);
 			context.commit('setParamForDel', data);
+		},
+		addToReserv(context, data) {
+			console.log('addToReserv(ACT)', data);
+			context.commit('addToReserv', data);
 		},
 	},
 	modules: {
