@@ -87,7 +87,7 @@ export default {
     fillManager() {
       var faker = require("faker");
 
-      for (let i = 1; i <= 7; i++) {
+      for (let i = 1; i <= 10; i++) {
         let name = faker.name.findName();
 
 		db.ref("managers/" + i + "/name").set(name);
