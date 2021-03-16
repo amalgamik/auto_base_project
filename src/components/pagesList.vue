@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: "pageList",
+  name: "PageList",
   props: ["page"],
   data() {
     return {};

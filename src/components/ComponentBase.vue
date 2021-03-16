@@ -16,8 +16,9 @@
 
       <div>
       	<button @click="visibility = !visibility">Add to reserv</button>
-	    <button @click="deleteFromDB({key: $store.state.storeBaseKey[lineClass], index : lineClass})">Delete</button>
-      </div>
+	    <button id="show-modal" @click="setShowModal({show: true,  key: $store.state.storeBaseKey[lineClass], index: lineClass})">Delete</button>
+		
+	  </div>
     </div>
     <form v-if="visibility">
       <div>Set quantity</div>
@@ -29,33 +30,43 @@
         name="quantity"
         id="quantity"
       />
-      <button @click="addToReserv($event)">Add</button>
+      <button @click.prevent="addToReserv({quantity: quantity, key: $store.state.storeBaseKey[lineClass], max: item.amount, name: item.name})">Add</button>
     </form>
   </li>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import Modal from '@/components/Modal'
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 export default {
   name: "ComponentBase",
-  props: ["item", "lineClass", "manager", "key"],
+  components: { Modal },
+  props: ["item", "lineClass", "manager"],
   data() {
     return {
       visibility: false,
       quantity: 0,
+	  keyDB: '',
+	  indexDB: 0,
     };
   },
   methods: {
     addToReserv(event) {
       event.preventDefault();
-	  console.log($key);
-      //   this.visibility = false
+        // this.visibility = false
     },
 	...mapActions ([
-		'deleteFromDB'
+		'setShowModal',
+		'addToReserv'
+	]),
+	...mapMutations ([
 	])
   },
-  computed: {},
+  computed: {
+	  ...mapGetters ([
+		  'showModal'
+	  ])
+  },
 };
 </script>
 

@@ -18,6 +18,9 @@ export default createStore({
 			newName: "",
 			newAmount: "",
 			newPrice:"",
+			showModal: false,
+			keyDB : '',
+			indexDB: 0,
 		}
 	},
 	getters: {
@@ -44,6 +47,15 @@ export default createStore({
 		},
 		pages(state) {
 			return state.pages;
+		},
+		showModal(state) {
+			return state.showModal;
+		},
+		keyDB(state) {
+			return state.keyDB;
+		},
+		indexDB(state) {
+			return state.indexDB;
 		},
 	},
 	mutations: {
@@ -82,25 +94,20 @@ export default createStore({
 			state.lineNumber == "" ? (state.lineNumber = 5) : state.lineNumber;
 			(state.selectedPage == 0) ? (state.selectedPage = 1) : state.selectedPage;
 			let startPoint = (state.selectedPage - 1) * +state.lineNumber;
-			console.log('33333',state.storeBase, typeof(state.storeBase));
-			console.log('333444',state.managerBase, typeof(state.managerBase));
 			let arr = state.storeBase.slice(
 				startPoint,
 				(startPoint + +state.lineNumber)
 			);
 			let pages = Math.ceil(state.storeBase.length / state.lineNumber);
-			console.log('from perPage', arr);
 
 			state.arr = arr;
 			state.pages = pages;
 
 		},
 		getSelection(state, data) {
-			console.log(data);
 			state.lineNumber = data;
 		},
 		onSelectPage(state, data) {
-			console.log(data);
 			state.selectedPage = data.data;
 		},
 		setToDB (state, data) {
@@ -123,75 +130,51 @@ export default createStore({
 				});
 		},
 		deleteFromDB (state, data) {
-			console.log('11111', data);
+			console.log('deleteFromDB', data);
 			let removed = db.ref('components');
 			state.arr.splice(data.index, 1);
 			removed.child(data.key).remove();
+			state.showModal = false;
+		},
+		setShowModal (state, data) {
+			console.log('setShowModal(MUT)', data);
+			state.showModal = data;
+		},
+		setParamForDel (state, data) {
+		console.log('setParamForDel(MUT)', data);
+		state.keyDB = data.key
+		state.indexDB = data.index
+		},
+		addToReserv (state, data) {
+		console.log('addToReserv(MUT)', data);
 
-		}
+		db.ref().child("reserves").push({
+			name: data.name,
+			quantity: data.quantity,
+			component_key: data.key,
+		  });
+		  let res = data.max - data.quantity;
+
+		  db.ref().child('components').child(data.key).update({amount: res});
+
+		},
 	},
 	actions: {
-		// async readManagerBase(context) {
-		// 	let ManDB = [];
-		// 	let manager = db.ref("managers");
-		// 		await manager.on("value", (snapshot) => {
-		// 			ManDB.length = 0;
-		// 			snapshot.forEach((childSnapshot) => {
-		// 				let childData = childSnapshot.val();
-		// 				ManDB.push(childData);
-		// 			});
-		// 		});
-		// 	console.log('from readManagerBase ', ManDB)
-		// 	context.commit('readManagerBase', ManDB);
-		// },
-		// async readComponentBase(context) {
-		// 	let storeDB = [];
-		// 	let storeDBKey = [];
-		// 	let ManDB = [];
-		// 	let components = db.ref();
-		// 	await components.child('components').once("value", (snapshot) => {
-		// 		storeDB.length = 0;
-		// 		storeDBKey.length = 0;
-		// 		snapshot.forEach((childSnapshot) => {
-		// 			let childData = childSnapshot.val();
-		// 			storeDBKey.push(childSnapshot.key);
-		// 			storeDB.push(childData);
-		// 		});
-		// 	});
-		// 	await components.child('managers').once("value", (snapshot) => {
-		// 		ManDB.length = 0;
-		// 		snapshot.forEach((childSnapshot) => {
-		// 			let childData = childSnapshot.val();
-		// 			ManDB.push(childData);
-		// 		});
-		// 	});
-		// 	components.off();
-		// 	console.log('from readComponentBase ', ManDB, storeDBKey, storeDB);
-
-		// 	context.commit('readComponentBase', {storeDB: storeDB, storeDBKey: storeDBKey, ManDB:ManDB});
-		// },
-		// perPage(context, data) { 
-		// 	console.log('00000',data);
-		// 	state.lineNumber == "" ? (state.lineNumber = 5) : state.lineNumber;
-		// 	(state.selectedPage == 0) ? (state.selectedPage = 1) : state.selectedPage;
-		// 	let startPoint = (state.selectedPage - 1) * +state.lineNumber;
-		// 	console.log('33333',data.storeBase, typeof(data.storeBase));
-		// 	console.log('333444',data.managerBase, typeof(data.managerBase));
-		// 	let arr = state.storeBase.slice(
-		// 		startPoint,
-		// 		(startPoint + +state.lineNumber)
-		// 	);
-		// 	let pages = Math.ceil(state.storeBase.length / state.lineNumber);
-		// 	console.log('from perPage', arr);
-
-		// 	context.commit('perPage', {arr: arr, pages: pages});
-		// },
 		sendToDB(context, data) {
 			context.commit('setToDB', data);
 		},
 		deleteFromDB (context, data) {
 			context.commit('deleteFromDB', data);
-		}
+		},
+		setShowModal (context, data) {
+			console.log('setShowModal(ACT)', data);
+			context.commit('setShowModal', data.show);
+			context.commit('setParamForDel', data);
+		},
+		addToReserv(context, data) {
+			console.log('addToReserv(ACT)', data);
+			context.commit('addToReserv', data);
+		},
 	},
 	modules: {
 	}

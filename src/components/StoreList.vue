@@ -21,6 +21,14 @@
           v-for="(item, index) in arr"
           :key="item"
         ></componentBase>
+		<modal v-if="showModal">
+			<!--
+			you can use custom content here to overwrite default content
+			-->
+			<template v-slot:header>
+			<h3>Warning!</h3>
+			</template>
+		</modal>
       </ul>
     </div>
     <div class="col-12">
@@ -60,11 +68,12 @@
 
 <script>
 import ComponentBase from "@/components/ComponentBase.vue";
-import PagesList from "@/components/pagesList.vue";
+import PagesList from "@/components/PagesList.vue";
+import Modal from "@/components/Modal.vue";
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 export default {
   name: "StoreList",
-  components: { ComponentBase, PagesList },
+  components: { ComponentBase, PagesList, Modal },
   data() {
     return {
 		selectedOptionLocal: "",
@@ -92,18 +101,19 @@ export default {
 		  'arr',
 		  'lineNumber',
 		  'selectedPage',
-		  'pages'
+		  'pages',
+		  'showModal'
 	  ]),
 	  ...mapActions ([
-		// 'readManagerBase',
-		// 'readComponentBase',
-		// 'perPage',  
 	  ]),
   },
 };
 </script>
 
 <style scoped>
+.modal-header {
+	justify-content: center!important;
+}
 .tableHead {
   display: flex;
   flex-wrap: nowrap;

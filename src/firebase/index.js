@@ -4,6 +4,7 @@
 
 import firebase from '@firebase/app';
 import "@firebase/database";
+import '@firebase/auth'
 
 // Add the Firebase products that you want to use
 const firebaseConfig = {
@@ -21,9 +22,19 @@ firebase.initializeApp(firebaseConfig);
 // Get a reference to the database service
 let db = firebase.database();
 
-
+firebase.getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+        const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+            unsubscribe();
+            resolve(user);
+        }, reject);
+    })
+};
 
 
 export {
 	db
-}
+};
+export {
+	firebase
+};
